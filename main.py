@@ -25,15 +25,23 @@ def import_tiger_r():
     tiger_r_pos = (SCREEN_SIZE[0] - tiger_r_image.get_width(), (SCREEN_SIZE[1] - tiger_r_image.get_height()) / 2)
     return tiger_r_image, tiger_r_pos
 
+def update(t_elaps, tiger_r_pos, tiger_l_pos):
+    tiger_r_pos = (tiger_r_pos[0] - t_elaps / 10, tiger_r_pos[1])
+    tiger_l_pos = (tiger_l_pos[0] + t_elaps / 10, tiger_l_pos[1])
+    return tiger_r_pos, tiger_l_pos
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 tiger_l_image, tiger_l_pos = import_tiger_l()
 tiger_r_image, tiger_r_pos = import_tiger_r()
+t_pre = pygame.time.get_ticks()
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    t_cur = pygame.time.get_ticks()
+    tiger_r_pos, tiger_l_pos = update(t_cur - t_pre, tiger_r_pos, tiger_l_pos)
+    t_pre = t_cur
     draw()
     pygame.display.update()
