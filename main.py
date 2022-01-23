@@ -22,7 +22,7 @@ def draw():
 def draw_tiger_r_rot():
     screen.blit(tiger_r.image, tiger_r.image.get_rect(
         center=tiger_r.image.get_rect(topleft=(
-            SCREEN_SIZE[0] - tiger_r.image.get_width() - tiger_r.position_offset,
+            SCREEN_SIZE[0] - tiger_r.image.get_width() - ImageObj.position_offset,
             (SCREEN_SIZE[1] - tiger_r.image.get_height()) / 2)).center).topleft)
 
 
@@ -47,7 +47,7 @@ def create_tiger_l():
     tiger_l_image = pygame.transform.scale(tiger_l_image,
                                            (tiger_l_image.get_width() // 3, tiger_l_image.get_height() // 3))
     tiger_l_pos = (0, (SCREEN_SIZE[1] - tiger_l_image.get_height()) / 2)
-    return ImageObj(tiger_l_image, tiger_l_pos, 0, "l")
+    return ImageObj(tiger_l_image, tiger_l_pos, "l")
 
 
 def create_tiger_r():
@@ -55,19 +55,39 @@ def create_tiger_r():
     tiger_r_image = pygame.transform.scale(tiger_r_image,
                                            (tiger_r_image.get_width() // 3, tiger_r_image.get_height() // 3))
     tiger_r_pos = (SCREEN_SIZE[0] - tiger_r_image.get_width(), (SCREEN_SIZE[1] - tiger_r_image.get_height()) / 2)
-    return ImageObj(tiger_r_image, tiger_r_pos, 0, "l")
+    return ImageObj(tiger_r_image, tiger_r_pos, "l")
 
 
 def create_lion():
     lion_image = pygame.image.load("lion_middle.jpg")
     lion_image = pygame.transform.scale(lion_image, (lion_image.get_width() // 3, lion_image.get_height() // 3))
     lion_pos = ((SCREEN_SIZE[0] - lion_image.get_width()) / 2, (SCREEN_SIZE[1] - lion_image.get_height()) / 8)
-    return ImageObj(lion_image, lion_pos, 0, "l", True)
+    return ImageObj(lion_image, lion_pos, True)
 
 
 def update(t_elaps):
     tiger_r.pos = (tiger_r.pos[0] - t_elaps / 10, tiger_r.pos[1])
     tiger_l.pos = (tiger_l.pos[0] + t_elaps / 10, tiger_l.pos[1])
+    if tiger_r.pos[0] - tiger_l.pos[0] < tiger_l.image.get_width():
+        lion.hidden = False
+    if not lion.hidden:
+        rotate_tigers(t_elaps)
+
+
+def rotate_tigers(t_elaps):
+    if ImageObj.angle > ImageObj.rotation_offset and ImageObj.direction == "r":
+        ImageObj.angle -= t_elaps / 15
+        ImageObj.direction = "l"
+    elif ImageObj.angle < -1 * ImageObj.rotation_offset and ImageObj.direction == "l":
+        ImageObj.angle += t_elaps / 15
+        ImageObj.direction = "r"
+    else:
+        if ImageObj.direction == "r":
+            ImageObj.angle += t_elaps / 15
+        else:
+            ImageObj.angle -= t_elaps / 15
+    tiger_l.image = pygame.transform.rotate(tiger_l.originalImage, ImageObj.angle)
+    tiger_r.image = pygame.transform.rotate(tiger_r.originalImage, -1 * ImageObj.angle)
 
 
 pygame.init()
