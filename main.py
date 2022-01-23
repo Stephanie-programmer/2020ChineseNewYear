@@ -3,14 +3,15 @@ import pygame
 BULL_BG_COLOR = (0.8471 * 255, 0.22157 * 255, 0.1765 * 255)
 LION_BG_COLOR = (0.8471 * 255, 0.1020 * 255, 0.2039 * 255)
 SCREEN_SIZE = (int(800 * 1.5), int(450 * 1.5))
+FONT_COLOR = (255, 207, 64)
+GREETING = "新春快乐"
+GREETING_POS = (SCREEN_SIZE[0] / 2.7, SCREEN_SIZE[1] * 3 / 4)
 
 pygame.init()
+pygame.mixer.music.load('Dive Down - VYEN.mp3')
+pygame.mixer.music.play(-1)
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = pygame.font.Font('YSHaoShenTi-2.ttf', 100)
-FONT_COLOR = (255, 207, 64)
-
-GREETING = u"新春快乐"
-GREETING_POS = (SCREEN_SIZE[0] / 2.7, SCREEN_SIZE[1] * 3 / 4)
 
 should_lion_appear = False
 lion_image = pygame.image.load("lion_middle.jpg")
@@ -39,8 +40,6 @@ pbg_bull_rotate_angle = 0
 pbg_bull_rotate_direction = "l"
 pbg_bull_l_image_rot = pbg_bull_l_image
 pbg_bull_r_image_rot = pbg_bull_r_image
-
-rotation_offset = 20
 
 
 def draw():
@@ -71,6 +70,7 @@ def update(t_elaps):
     if should_lion_appear:
         global pbg_bull_l_image, pbg_bull_r_image, pbg_bull_rotate_angle, pbg_bull_rotate_direction
         global pbg_bull_l_image_rot, pbg_bull_r_image_rot
+        rotation_offset = 20
         if pbg_bull_rotate_angle > rotation_offset and pbg_bull_rotate_direction == "r":
             pbg_bull_rotate_angle -= t_elaps/15
             pbg_bull_rotate_direction = "l"
