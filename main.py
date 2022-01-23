@@ -1,4 +1,5 @@
 import pygame
+
 from imageObj import *
 
 SCREEN_SIZE = (int(800 * 1.5), int(450 * 1.5))
@@ -90,12 +91,20 @@ def rotate_tigers(t_elaps):
     tiger_r.image = pygame.transform.rotate(tiger_r.originalImage, -1 * ImageObj.angle)
 
 
+def play_bg_music():
+    bg_music = pygame.mixer.Sound('Dive Down - VYEN.mp3')
+    bg_music.play(-1)
+
+
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
+play_bg_music()
 t_pre = pygame.time.get_ticks()
+
 tiger_l = create_tiger_l()
 tiger_r = create_tiger_r()
 lion = create_lion()
+
 running = True
 while running:
     for event in pygame.event.get():
